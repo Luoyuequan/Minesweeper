@@ -30,15 +30,15 @@ public class Minesweeper {
     /**
      * 棋盘内剩余的单元格总数
      */
-    private int totalCell;
+    private volatile int totalCell;
     /**
      * 游戏胜利标识
      */
-    private boolean win = false;
+    private volatile boolean win = false;
     /**
      * 游戏失败标识
      */
-    private boolean lose = false;
+    private volatile boolean lose = false;
 
     /**
      * 初始化

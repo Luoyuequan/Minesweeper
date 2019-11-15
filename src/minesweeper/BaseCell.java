@@ -53,7 +53,7 @@ public abstract class BaseCell {
     /**
      * 当前单元格，周围的雷数
      */
-    private int aroundRayNumber;
+    private volatile int aroundRayNumber;
     /**
      * 周围雷数对应的标识符
      */
