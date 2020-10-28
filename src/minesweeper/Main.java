@@ -14,17 +14,17 @@ public class Main {
             Scanner inputLevel = new Scanner(System.in);
             System.out.print(GameLevel.getGameStartNote());
             String levelContent = inputLevel.nextLine().trim();
-            int level = Integer.valueOf(levelContent);
-//            创建棋盘
+            int level = Integer.parseInt(levelContent);
+            // 创建棋盘
             Minesweeper minesweeper = Minesweeper.getInstance(level);
-//            开始生产单元格
+            // 开始生产单元格
             minesweeper.productCell();
-//            开始游戏
+            // 开始游戏
             long startTime = System.currentTimeMillis();
             while (true) {
-//                绘制棋盘内容
+                // 绘制棋盘内容
                 minesweeper.draw();
-//                棋盘内剩余的单元格皆为雷时，游戏胜利
+                // 棋盘内剩余的单元格皆为雷时，游戏胜利
                 minesweeper.setWin(minesweeper.getTotalCell() <= minesweeper.getRayNumber());
                 try {
                     if (minesweeper.isWin()) {
@@ -33,7 +33,7 @@ public class Main {
                         System.out.println("本局游戏胜利所用时间:" + (endTime - startTime) / 1000 + "秒");
                     }
                     if (minesweeper.isLose()) {
-//                            点击到雷, 退出游戏, over
+                        // 点击到雷, 退出游戏, over
                         System.out.println("------GAME OVER!!!------");
                     }
                     try {
@@ -43,23 +43,23 @@ public class Main {
                         System.out.println("当前游戏难度=" + GameLevel.getGameLevel(level).getLevelString() + ",雷数=" + minesweeper.getRayNumber());
                         System.out.print("坐标格式为x.y,例如:1.1\n请输入坐标:");
                         String[] content = input.nextLine().trim().split("\\.", 2);
-                        int x = Integer.valueOf(content[0]);
-                        int y = Integer.valueOf(content[1]);
+                        int x = Integer.parseInt(content[0]);
+                        int y = Integer.parseInt(content[1]);
                         Coordinate coordinate = new Coordinate(x, y);
                         if (Objects.equals(coordinate, new Coordinate(1, 0))) {
-//                            结束游戏
+                            // 结束游戏
                             break exit;
                         }
                         if (coordinate.equals(new Coordinate(0, 1))) {
-//                            重新开始一局游戏
+                            // 重新开始一局游戏
                             break;
                         }
-                        if (!minesweeper.isLose() && !minesweeper.isWin()) {
-//                        真实坐标，相对于棋盘显示的坐标 - 1
+                        if (minesweeper.isRun()) {
+                            // 真实坐标，相对于棋盘显示的坐标 - 1
                             Coordinate realCoordinate = coordinate.subtract(1, 1);
                             BaseCell cell = minesweeper.getCells().get(realCoordinate);
                             if (cell != null) {
-//                            点击非雷false，为雷true
+                                // 点击非雷false，为雷true
                                 minesweeper.setLose(cell.click());
                                 System.out.println("你输入的坐标为:" + coordinate);
                             } else {

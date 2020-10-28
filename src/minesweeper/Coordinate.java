@@ -8,8 +8,8 @@ import java.util.Objects;
  * @author Administrator
  */
 public class Coordinate implements Comparable<Coordinate> {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     Coordinate(int x, int y) {
         this.x = x;

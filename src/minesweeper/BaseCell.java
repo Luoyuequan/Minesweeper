@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 基本单元格
  *
- * @author Administrator
+ * @author luoyueuqan
  */
 public abstract class BaseCell {
     /**
@@ -30,7 +30,7 @@ public abstract class BaseCell {
     /**
      * 单元格坐标
      */
-    private Coordinate coordinate;
+    private final Coordinate coordinate;
     /**
      * 检查标志
      * 0未检查
@@ -45,11 +45,11 @@ public abstract class BaseCell {
     /**
      * 游戏主棋盘
      */
-    private Minesweeper minesweeper = Minesweeper.getMinesweeper();
+    private final Minesweeper minesweeper = Minesweeper.getMinesweeper();
     /**
      * 周围单元格集合
      */
-    private List<BaseCell> aroundCell = new ArrayList<>();
+    private final List<BaseCell> aroundCell = new ArrayList<>();
     /**
      * 当前单元格，周围的雷数
      */
@@ -57,7 +57,7 @@ public abstract class BaseCell {
     /**
      * 周围雷数对应的标识符
      */
-    private List<String> numberStrList = List.of("◎", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "●");
+    private final List<String> numberStrList = List.of("◎", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "●");
 
     /**
      * 单元格初始化
@@ -73,16 +73,16 @@ public abstract class BaseCell {
      * 仅通过上单元格和左单元格和左上单元格
      */
     void initAroundCell() {
-//        上单元格的坐标
+        // 上单元格的坐标
         Coordinate topCoordinate = this.coordinate.xSubtract(1);
-//        左单元格的坐标
+        // 左单元格的坐标
         Coordinate leftCoordinate = this.coordinate.ySubtract(1);
-//        左上单元格的坐标
+        // 左上单元格的坐标
         Coordinate leftTopCoordinate = this.coordinate.subtract(1, 1);
-        this.setTopCell(this.minesweeper.getCells().get(topCoordinate));
-        this.setLeftCell(this.minesweeper.getCells().get(leftCoordinate));
-        this.setLeftTopCell(this.minesweeper.getCells().get(leftTopCoordinate));
-//        将当前单元格与上单元格进行互相添加，互相计算雷数
+        this.setTopCell(this.minesweeper.getCells().get(topCoordinate))
+                .setLeftCell(this.minesweeper.getCells().get(leftCoordinate))
+                .setLeftTopCell(this.minesweeper.getCells().get(leftTopCoordinate));
+        // 将当前单元格与上单元格进行互相添加，互相计算雷数
         if (this.getTopCell() != null) {
             this.getTopCell().getAroundCell().add(this);
             this.getAroundCell().add(this.getTopCell());
@@ -93,7 +93,7 @@ public abstract class BaseCell {
                 this.addAroundRayNumber();
             }
         }
-//        将当前单元格与左单元格进行互相添加，互相计算雷数
+        // 将当前单元格与左单元格进行互相添加，互相计算雷数
         if (this.getLeftCell() != null) {
             this.getLeftCell().getAroundCell().add(this);
             this.getAroundCell().add(this.getLeftCell());
@@ -104,7 +104,7 @@ public abstract class BaseCell {
                 this.addAroundRayNumber();
             }
         }
-//        将当前单元格与左上单元格进行互相添加，互相计算雷数
+        // 将当前单元格与左上单元格进行互相添加，互相计算雷数
         if (this.getLeftTopCell() != null) {
             this.getLeftTopCell().getAroundCell().add(this);
             this.getAroundCell().add(this.getLeftTopCell());
@@ -114,7 +114,7 @@ public abstract class BaseCell {
             if (this.getLeftTopCell().getIsRay()) {
                 this.addAroundRayNumber();
             }
-//          左上单元格存在时，左单元格与上单元格进行互相添加，互相计算雷数
+            // 左上单元格存在时，左单元格与上单元格进行互相添加，互相计算雷数
             this.getLeftCell().getAroundCell().add(this.getTopCell());
             this.getTopCell().getAroundCell().add(this.getLeftCell());
             if (this.getLeftCell().getIsRay()) {
@@ -211,24 +211,27 @@ public abstract class BaseCell {
         return topCell;
     }
 
-    private void setTopCell(BaseCell topCell) {
+    private BaseCell setTopCell(BaseCell topCell) {
         this.topCell = topCell;
+        return this;
     }
 
     private BaseCell getLeftCell() {
         return leftCell;
     }
 
-    private void setLeftCell(BaseCell leftCell) {
+    private BaseCell setLeftCell(BaseCell leftCell) {
         this.leftCell = leftCell;
+        return this;
     }
 
     private BaseCell getLeftTopCell() {
         return leftTopCell;
     }
 
-    private void setLeftTopCell(BaseCell leftTopCell) {
+    private BaseCell setLeftTopCell(BaseCell leftTopCell) {
         this.leftTopCell = leftTopCell;
+        return this;
     }
 
     List<BaseCell> getAroundCell() {

@@ -2,6 +2,7 @@ package minesweeper;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Administrator
@@ -82,12 +83,12 @@ public class Minesweeper {
         Collections.shuffle(listCellCoordinate, new Random());
         this.rayBoard = listCellCoordinate.subList(0, this.getRayNumber());
         for (Coordinate c : this.getRayBoard()) {
+            // 布置雷
             this.getCells().get(c).setIsRay();
         }
-//        每个单元格开始加载周围单元格
-        for (Coordinate c : listCellCoordinate) {
-            this.getCells().get(c).initAroundCell();
-        }
+        // 每个单元格开始加载周围单元格
+        listCellCoordinate.stream().parallel()
+                .peek(c -> this.getCells().get(c).initAroundCell()).collect(Collectors.toList());
         Collections.sort(this.getRayBoard());
     }
 
@@ -113,7 +114,7 @@ public class Minesweeper {
             System.out.print((i + 1) + "|");
         }
         for (Map.Entry<Coordinate, BaseCell> entry : this.getCells().entrySet()) {
-//            每行开始时，打印行号
+            // 每行开始时，打印行号
             if (entry.getKey().getY() == 0) {
                 System.out.print("\n" + (entry.getKey().getX() + 1) + "\t");
             }
@@ -182,5 +183,11 @@ public class Minesweeper {
         return rayBoard;
     }
 
+    /**
+     * 游戏 当前回合 是否 进行中
+     */
+    public boolean isRun() {
+        return !isLose() && !isWin();
+    }
 
 }

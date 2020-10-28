@@ -1,7 +1,7 @@
 package minesweeper;
 
 /**
- * @author Administrator
+ * @author luoyuequan
  */
 
 public enum GameLevel {
